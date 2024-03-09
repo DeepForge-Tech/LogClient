@@ -55,10 +55,9 @@ int LogClient::Client::GET() {
     }
 }
 
-int LogClient::Client::sendRequest(string type,auto data)
+int LogClient::Client::sendRequest(string type)
 {
     try {
-        data == NULL ? raise logic_error("Data is not found.") : continue;
         int result = (client.*(Methods[type]))();
         return result;
     }

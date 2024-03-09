@@ -27,7 +27,7 @@ namespace LogClient
         Value data;
 
 
-        int sendRequest(string type,auto data);
+        int sendRequest(string type);
 
         int POST();
 
