@@ -45,5 +45,5 @@ namespace LogClient
                 {"GET",  &Client::GET}};
     };
 
-    Client client;
+    // Client client;
 }

@@ -58,7 +58,7 @@ int LogClient::Client::GET() {
 int LogClient::Client::sendRequest(string type)
 {
     try {
-        int result = (client.*(Methods[type]))();
+        int result = (this->*(Methods[type]))();
         return result;
     }
     catch (exception &error) {

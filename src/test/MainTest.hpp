@@ -7,6 +7,8 @@
 using namespace std;
 using namespace LogClient;
 
+Client client;
+
 class LogClientTest : public ::testing::Test
 {
 public:
