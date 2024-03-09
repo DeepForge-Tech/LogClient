@@ -46,7 +46,6 @@ int LogClient::Client::GET() {
         if (res != CURLE_OK) {
             cerr << "GET request failed: " << curl_easy_strerror(res) << endl;
         }
-
         curl_easy_cleanup(curl);
         return res;
     }
@@ -59,18 +58,18 @@ int LogClient::Client::GET() {
 int LogClient::Client::sendRequest(string type)
 {
     try {
-        cout << "Hello" << endl;
-        (client.*(Methods[type]))();
+        int result = (client.*(Methods[type]))();
+        return result;
     }
     catch (exception &error) {
-        cout << error.what() << '\n';
+        cerr << error.what() << '\n';
+        return 1;
     }
-    return 0;
 }
 
-int main() {
-    LogClient::client.data["title"] = "Hello, world!";
-    LogClient::client.sendRequest("POST");
-//    LogClient::
-    LogClient::client.sendRequest("GET");
-}
+//int main() {
+//    LogClient::client.data["title"] = "Hello, world!";
+//    LogClient::client.sendRequest("POST");
+////    LogClient::
+//    LogClient::client.sendRequest("GET");
+//}

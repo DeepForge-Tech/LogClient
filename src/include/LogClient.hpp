@@ -5,7 +5,7 @@
 #include <map>
 #include <exception>
 
-#define LOGSERVER_URL "http://localhost:8000/api/add_log"
+#define LOGSERVER_URL "https://enthusiastic-crow-kilt.cyclic.app/"
 
 using namespace std;
 using namespace Json;
@@ -23,7 +23,7 @@ namespace LogClient
         CURLcode res;
         // string type
         string readBuffer;
-        string GET_URL = "logserver.alwaysdata.net/api/logs/wake_up_tests";
+        string GET_URL = "https://enthusiastic-crow-kilt.cyclic.app/";
         Value data;
 
 
