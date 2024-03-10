@@ -1,9 +1,9 @@
 #include <iostream>
-#include "../LogClient.cpp"
+#include "LogClient.hpp"
 #include <gtest/gtest.h>
 #include <filesystem>
 #include <map>
-#include <gmock/gmock.h>
+
 using namespace std;
 using namespace LogClient;
 

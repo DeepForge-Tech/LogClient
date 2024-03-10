@@ -1,4 +1,11 @@
-#include "include/LogClient.hpp"
+#include "LogClient.hpp"
+
+
+size_t LogClient::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    ((string *) userp)->append((char *) contents, size * nmemb);
+    return size * nmemb;
+}
 
 int LogClient::Client::POST() {
     curl = curl_easy_init();
@@ -68,8 +75,9 @@ int LogClient::Client::sendRequest(string type)
 }
 
 //int main() {
-//    LogClient::client.data["title"] = "Hello, world!";
-//    LogClient::client.sendRequest("POST");
+//    Client client;
+//    client.data["title"] = "Hello, world!";
+//    client.sendRequest("POST");
 ////    LogClient::
-//    LogClient::client.sendRequest("GET");
+//    client.sendRequest("GET");
 //}

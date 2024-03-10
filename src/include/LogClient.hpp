@@ -1,3 +1,5 @@
+#ifndef LOG_CLIENT
+#define LOG_CLIENT
 #include <iostream>
 #include <string>
 #include "curl/curl.h"
@@ -12,10 +14,7 @@ using namespace Json;
 
 namespace LogClient
 {
-    size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
-        ((string *) userp)->append((char *) contents, size * nmemb);
-        return size * nmemb;
-    }
+    size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
 
     class Client {
     public:
@@ -25,7 +24,6 @@ namespace LogClient
         string readBuffer;
         string GET_URL = "https://enthusiastic-crow-kilt.cyclic.app/";
         Value data;
-
 
         int sendRequest(string type);
 
@@ -47,3 +45,4 @@ namespace LogClient
 
     // Client client;
 }
+#endif
