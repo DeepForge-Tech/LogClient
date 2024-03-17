@@ -7,11 +7,38 @@ size_t LogClient::WriteCallback(void *contents, size_t size, size_t nmemb, void 
     return size * nmemb;
 }
 
-int LogClient::Client::POST() {
+string LogClient::Client::getTime()
+{
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    return buf;
+}
+
+int LogClient::Client::writeLog(basic_string<char, char_traits<char>, allocator<char>> log_text, const char *type)
+{
+    if (!filesystem::exists(logsDir))
+    {
+        filesystem::create_directory(logsDir);
+    }
+    fstream  file;
+    file.open(logPath,ios::app,ios::binary);
+    log_text = "[" + getTime() + "]::" + logInformation[type] + ":::" + log_text;
+    file << log_text << "\n";
+    file.close();
+    cout << log_text << "11111" << endl;
+    return 0;
+}
+
+int LogClient::Client::POST(const char* url,const Json::Value& data) {
     curl = curl_easy_init();
     if (curl)
     {
-        curl_easy_setopt(curl, CURLOPT_URL, LOGSERVER_URL);
+        curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         string dataStr = data.toStyledString();
@@ -26,7 +53,8 @@ int LogClient::Client::POST() {
         res = curl_easy_perform(curl);
 
         if (res != CURLE_OK) {
-            cerr << "POST request failed: " << curl_easy_strerror(res) << endl;
+            string LogText = "POST request failed." + (string)(curl_easy_strerror(res));
+            writeLog(LogText,"Debug");
         }
 
         curl_easy_cleanup(curl);
@@ -38,10 +66,10 @@ int LogClient::Client::POST() {
     }
 }
 
-int LogClient::Client::GET() {
+int LogClient::Client::GET(const char* url) {
     curl = curl_easy_init();
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, GET_URL.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -51,7 +79,8 @@ int LogClient::Client::GET() {
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            cerr << "GET request failed: " << curl_easy_strerror(res) << endl;
+            string LogText = "GET request failed." + (string)(curl_easy_strerror(res));
+            writeLog(LogText,"Debug");
         }
         curl_easy_cleanup(curl);
         return res;
@@ -62,17 +91,6 @@ int LogClient::Client::GET() {
     }
 }
 
-int LogClient::Client::sendRequest(string type)
-{
-    try {
-        int result = (this->*(Methods[type]))();
-        return result;
-    }
-    catch (exception &error) {
-        cerr << error.what() << '\n';
-        return 1;
-    }
-}
 
 //int main() {
 //    Client client;

@@ -6,11 +6,16 @@
 #include "json/json.h"
 #include <map>
 #include <exception>
-
+#include <fstream>
+#include <filesystem>
+#include <cstdlib>
+#include <stdio.h>
+#include <chrono>
+#include <ctime>
 #define LOGSERVER_URL "https://enthusiastic-crow-kilt.cyclic.app/"
 
 using namespace std;
-using namespace Json;
+//using namespace Json;
 
 namespace LogClient
 {
@@ -23,26 +28,32 @@ namespace LogClient
         // string type
         string readBuffer;
         string GET_URL = "https://enthusiastic-crow-kilt.cyclic.app/";
-        Value data;
+//        Value data;
+        filesystem::path currentDir = filesystem::current_path();
+        string logsDir = currentDir.generic_string() + "/logs";
+        string logPath = logsDir + "/log.txt";
+        map<string, string> logInformation = {
+                {"Debug", "[DEBUG]"},
+                {"Info", "[INFO]"},
+                {"Error", "[ERROR]"},
+                {"Warning", "[WARNING]"},
+                {"Success", "[SUCCESS]"}
+        };
 
-        int sendRequest(string type);
+        int POST(const char *url,const Json::Value& data);
 
-        int POST();
+        int GET(const char *url);
 
-        int GET();
+        int writeLog(basic_string<char, char_traits<char>, allocator<char>> log_text, const char *type);
+
+        string getTime();
 
         Client() {
-//            curl_global_init(CURL_GLOBAL_DEFAULT);
             curl = curl_easy_init();
         }
 
     private:
-        using funct_t = int (Client::*)(void);
-        map<string, funct_t> Methods = {
-                {"POST", &Client::POST},
-                {"GET",  &Client::GET}};
     };
-
     // Client client;
 }
 #endif
