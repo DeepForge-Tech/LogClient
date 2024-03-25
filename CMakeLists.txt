@@ -17,7 +17,7 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "AMD64")
 elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64") # for tx2
     set(architecture "arm64")
 endif ()
-set(CMAKE_BINARY_DIR "${CMAKE_SOURCE_DIR}/build/${architecture}/${CMAKE_BUILD_TYPE}")
+set(CMAKE_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build/${architecture}/${CMAKE_BUILD_TYPE}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(SOURCE_FILES
@@ -45,8 +45,8 @@ else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -I ../../include -DCURL_STATICLIB -Bstatic")
 endif ()
-include_directories(${CMAKE_SOURCE_DIR}/src/)
-include_directories(${CMAKE_SOURCE_DIR}/src/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 add_library(Client ${SOURCE_FILES})
 if (WIN32)
     set(USE_WINDOWS_SSPI ON)
@@ -112,7 +112,7 @@ elseif (UNIX)
     )
 endif ()
 
-# target_sources(Client PRIVATE ${CMAKE_SOURCE_DIR}/src/resource.rc)
+# target_sources(Client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/resource.rc)
 target_link_libraries(Client
         PRIVATE
         ${LIBRARIES}

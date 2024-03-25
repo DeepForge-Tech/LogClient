@@ -1,4 +1,4 @@
-#include "LogClient.hpp"
+#include <LogClient.hpp>
 
 
 size_t LogClient::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)

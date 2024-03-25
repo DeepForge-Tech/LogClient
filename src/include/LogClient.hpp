@@ -54,6 +54,5 @@ namespace LogClient
 
     private:
     };
-    // Client client;
 }
 #endif
