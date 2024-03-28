@@ -21,7 +21,7 @@ set(CMAKE_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build/${architecture}/${CMAKE_
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(SOURCE_FILES
-        ./src/LogClient.cpp
+        src/LogClient.cpp
         src/include/LogClient.hpp
 )
 # jsoncpp
@@ -125,22 +125,22 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 set(TEST_SOURCE_FILES
 #        ${SOURCE_FILES}
-        ./src/test/MainTest.cpp
+        src/test/MainTest.cpp
         src/test/MainTest.hpp
         #   ./src/test/MainTest.hpp
 )
 enable_testing()
 add_executable(
-        MainTest
-        ./src/include/LogClient.hpp
+        ClientTest
+        src/include/LogClient.hpp
         ${TEST_SOURCE_FILES}
 )
 target_link_libraries(
-        MainTest
+        ClientTest
         ${TEST_LIBRARIES}
 )
 include(GoogleTest)
-gtest_discover_tests(MainTest)
+gtest_discover_tests(ClientTest)
 
 # if(APPLE)
 #   file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents)
