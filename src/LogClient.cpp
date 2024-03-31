@@ -3,11 +3,11 @@
 
 size_t LogClient::WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    ((string *) userp)->append((char *) contents, size * nmemb);
+    ((std::string *) userp)->append((char *) contents, size * nmemb);
     return size * nmemb;
 }
 
-string LogClient::Client::getTime()
+std::string LogClient::Client::getTime()
 {
     time_t     now = time(0);
     struct tm  tstruct;
@@ -19,18 +19,17 @@ string LogClient::Client::getTime()
     return buf;
 }
 
-int LogClient::Client::writeLog(basic_string<char, char_traits<char>, allocator<char>> log_text, const char *type)
+int LogClient::Client::writeLog(std::basic_string<char, std::char_traits<char>, std::allocator<char>> log_text, const char *type)
 {
-    if (!filesystem::exists(logsDir))
+    if (!std::filesystem::exists(logsDir))
     {
-        filesystem::create_directory(logsDir);
+        std::filesystem::create_directory(logsDir);
     }
-    fstream  file;
-    file.open(logPath,ios::app,ios::binary);
+    std::fstream  file;
+    file.open(logPath,std::ios::app,std::ios::binary);
     log_text = "[" + getTime() + "]::" + logInformation[type] + ":::" + log_text;
     file << log_text << "\n";
     file.close();
-    cout << log_text << "11111" << endl;
     return 0;
 }
 
@@ -41,7 +40,7 @@ int LogClient::Client::POST(const char* url,const Json::Value& data) {
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        string dataStr = data.toStyledString();
+        std::string dataStr = data.toStyledString();
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, dataStr.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curl_slist_append(NULL, "Content-Type: application/json"));
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -53,7 +52,7 @@ int LogClient::Client::POST(const char* url,const Json::Value& data) {
         res = curl_easy_perform(curl);
 
         if (res != CURLE_OK) {
-            string LogText = "POST request failed." + (string)(curl_easy_strerror(res));
+            std::string LogText = "POST request failed." + (std::string)(curl_easy_strerror(res));
             writeLog(LogText,"Debug");
         }
 
@@ -79,7 +78,7 @@ int LogClient::Client::GET(const char* url) {
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            string LogText = "GET request failed." + (string)(curl_easy_strerror(res));
+            std::string LogText = "GET request failed." + (std::string)(curl_easy_strerror(res));
             writeLog(LogText,"Debug");
         }
         curl_easy_cleanup(curl);

@@ -12,10 +12,8 @@
 #include <stdio.h>
 #include <chrono>
 #include <ctime>
-#define LOGSERVER_URL "https://enthusiastic-crow-kilt.cyclic.app/"
 
-using namespace std;
-//using namespace Json;
+#define LOGSERVER_URL "https://enthusiastic-crow-kilt.cyclic.app/"
 
 namespace LogClient
 {
@@ -26,13 +24,13 @@ namespace LogClient
         CURL *curl;
         CURLcode res;
         // string type
-        string readBuffer;
-        string GET_URL = "https://enthusiastic-crow-kilt.cyclic.app/";
+        std::string readBuffer;
+        std::string GET_URL = "https://enthusiastic-crow-kilt.cyclic.app/";
 //        Value data;
-        filesystem::path currentDir = filesystem::current_path();
-        string logsDir = currentDir.generic_string() + "/logs";
-        string logPath = logsDir + "/log.txt";
-        map<string, string> logInformation = {
+        std::filesystem::path currentDir = std::filesystem::current_path();
+        std::string logsDir = currentDir.generic_string() + "/logs";
+        std::string logPath = logsDir + "/log.txt";
+        std::map<std::string, std::string> logInformation = {
                 {"Debug", "[DEBUG]"},
                 {"Info", "[INFO]"},
                 {"Error", "[ERROR]"},
@@ -44,9 +42,9 @@ namespace LogClient
 
         int GET(const char *url);
 
-        int writeLog(basic_string<char, char_traits<char>, allocator<char>> log_text, const char *type);
+        int writeLog(std::basic_string<char, std::char_traits<char>, std::allocator<char>> log_text, const char *type);
 
-        string getTime();
+        std::string getTime();
 
         Client() {
             curl = curl_easy_init();
