@@ -2,8 +2,8 @@
 #define LOG_CLIENT
 #include <iostream>
 #include <string>
-#include "curl/curl.h"
-#include "json/json.h"
+#include <curl/curl.h>
+#include <json/json.h>
 #include <map>
 #include <exception>
 #include <fstream>
