@@ -25,7 +25,7 @@ int LogClient::Client::writeLog(std::basic_string<char, std::char_traits<char>, 
     {
         std::filesystem::create_directory(logsDir);
     }
-    std::fstream  file(logPath,std::ios::app,std::ios::binary);
+    std::fstream file(logPath, std::ios::app | std::ios::binary);
     log_text = "[" + getTime() + "]::" + logInformation[type] + ":::" + log_text;
     file << log_text << "\n";
     file.close();
