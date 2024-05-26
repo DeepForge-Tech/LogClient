@@ -9,30 +9,19 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a .so .dylib)
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") # for desktop
-    set(architecture "x64")
-elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "AMD64")
-    set(architecture "x64")
-elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64") # for tx2
-    set(architecture "arm64")
-endif ()
-set(CMAKE_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build/${architecture}/${CMAKE_BUILD_TYPE}")
+
+set(CMAKE_BINARY_DIR "${CMAKE_BINARY_DIR}/bin/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(SOURCE_FILES
         src/LogClient.cpp
-        src/include/LogClient.hpp
+        include/LogClient/LogClient.hpp
 )
-# jsoncpp
-FetchContent_Declare(jsoncpp
-        GIT_REPOSITORY https://github.com/DeepForge-Technology/jsoncpp.git
-        GIT_TAG master
-)
-# if(NOT jsoncpp_POPULATED)
-#   FetchContent_Populate(jsoncpp)
-#   add_subdirectory(${jsoncpp_SOURCE_DIR} ${jsoncpp_BINARY_DIR})
-# endif()
-FetchContent_MakeAvailable(jsoncpp)
+if(WIN32)
+        set(USE_WINDOWS_SSPI ON)
+        set(USE_SCHANNEL ON)
+endif()
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/DownloadDependencies.cmake)
 
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -45,16 +34,9 @@ else ()
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -I /usr/local/include -I ../../include -DCURL_STATICLIB -Bstatic")
 endif ()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_library(Client ${SOURCE_FILES})
 if (WIN32)
-    set(USE_WINDOWS_SSPI ON)
-    set(USE_SCHANNEL ON)
-    FetchContent_Declare(libcurl
-            GIT_REPOSITORY https://github.com/DeepForge-Technology/curl.git
-            GIT_TAG master
-    )
-    FetchContent_MakeAvailable(libcurl)
     set(LIBRARIES
             libcurl_static
             jsoncpp_static
@@ -68,19 +50,6 @@ if (WIN32)
     )
 elseif (APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++")
-    # find_package(libzip REQUIRED)
-    #    find_package(CURL)
-    # if(CURL_FOUND)
-    #    include_directories(${CURL_INCLUDE_DIR})
-    #   set(requiredlibs ${requiredlibs} ${CURL_LIBRARIES} )
-    # else(CURL_FOUND)
-    #   message(FATAL_ERROR "Could not find the CURL library and development files.")
-    # endif(CURL_FOUND)
-    FetchContent_Declare(libcurl
-            GIT_REPOSITORY https://github.com/DeepForge-Technology/curl.git
-            GIT_TAG master
-    )
-    FetchContent_MakeAvailable(libcurl)
     set(LIBRARIES
             jsoncpp_static
             libcurl_static
@@ -93,11 +62,6 @@ elseif (APPLE)
             GTest::gmock_main
     )
 elseif (UNIX)
-    FetchContent_Declare(libcurl
-            GIT_REPOSITORY https://github.com/DeepForge-Technology/curl.git
-            GIT_TAG master
-    )
-    FetchContent_MakeAvailable(libcurl)
     set(LIBRARIES
             jsoncpp_static
             libcurl_static
@@ -131,7 +95,7 @@ set(TEST_SOURCE_FILES
 enable_testing()
 add_executable(
         ClientTest
-        src/include/LogClient.hpp
+        include/LogClient/LogClient.hpp
         ${TEST_SOURCE_FILES}
 )
 target_link_libraries(

@@ -1,5 +1,5 @@
 #include <iostream>
-#include <LogClient.hpp>
+#include <LogClient/LogClient.hpp>
 #include <gtest/gtest.h>
 #include <filesystem>
 #include "json/json.h"
