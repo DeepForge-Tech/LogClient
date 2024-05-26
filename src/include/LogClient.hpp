@@ -4,7 +4,7 @@
 #include <string>
 #include <curl/curl.h>
 #include <json/json.h>
-#include <map>
+#include <unordered_map>
 #include <exception>
 #include <fstream>
 #include <filesystem>
@@ -30,7 +30,7 @@ namespace LogClient
         std::filesystem::path currentDir = std::filesystem::current_path();
         std::string logsDir = currentDir.generic_string() + "/logs";
         std::string logPath = logsDir + "/log.txt";
-        std::map<std::string, std::string> logInformation = {
+        std::unordered_map<std::string, std::string> logInformation = {
                 {"Debug", "[DEBUG]"},
                 {"Info", "[INFO]"},
                 {"Error", "[ERROR]"},
