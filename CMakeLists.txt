@@ -81,38 +81,4 @@ target_link_libraries(Client
         ${LIBRARIES}
 )
 
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-FetchContent_MakeAvailable(googletest)
-set(TEST_SOURCE_FILES
-#        ${SOURCE_FILES}
-        src/test/MainTest.cpp
-        src/test/MainTest.hpp
-        #   ./src/test/MainTest.hpp
-)
-enable_testing()
-add_executable(
-        ClientTest
-        include/LogClient/LogClient.hpp
-        ${TEST_SOURCE_FILES}
-)
-target_link_libraries(
-        ClientTest
-        ${TEST_LIBRARIES}
-)
-include(GoogleTest)
-gtest_discover_tests(ClientTest)
-
-# if(APPLE)
-#   file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents)
-#   file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents/MacOS)
-#   file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents/Resources)
-#   # Поиск всех файлов в исходной папке
-#   file(GLOB ALL_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src*")
-#   # Копирование всех найденных файлов в целевую папку
-#   file(COPY ${ALL_SOURCE_FILES} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents/Resources")
-#   file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/build/Client DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents/MacOS")
-#   file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/Client.app/Contents")
-# endif()
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
