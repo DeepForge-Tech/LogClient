@@ -39,11 +39,11 @@ add_library(Client ${SOURCE_FILES})
 if (WIN32)
     set(LIBRARIES
             libcurl_static
-            jsoncpp_static
+            jsoncpp_lib
     )
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
@@ -51,24 +51,24 @@ if (WIN32)
 elseif (APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++")
     set(LIBRARIES
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
     )
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
     )
 elseif (UNIX)
     set(LIBRARIES
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
     )
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
