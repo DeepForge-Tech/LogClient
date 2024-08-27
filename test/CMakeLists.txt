@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18)
 if (WIN32)
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
@@ -12,7 +12,7 @@ elseif (APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++")
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
@@ -20,7 +20,7 @@ elseif (APPLE)
 elseif (UNIX)
     set(TEST_LIBRARIES
             Client
-            jsoncpp_static
+            jsoncpp_lib
             libcurl_static
             GTest::gtest_main
             GTest::gmock_main
